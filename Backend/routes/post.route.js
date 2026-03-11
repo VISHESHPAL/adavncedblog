@@ -20,3 +20,4 @@ postRouter.get("/", getAllPublicPosts);
 postRouter.get("/:id", getSinglePost);
 
 export default postRouter;
+         

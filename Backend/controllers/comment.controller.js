@@ -50,7 +50,7 @@ export const updateComment = async (req, res) => {
     if (!comment) {
       return res.status(404).json({
         success: false,
-        message: "Comment Not Found !",
+        message: "Comment Not Found!",
       });
     }
 
@@ -60,26 +60,25 @@ export const updateComment = async (req, res) => {
     ) {
       return res.status(403).json({
         success: false,
-        message: "Not Allwed to Changes the Commnet !",
+        message: "Not allowed to change the comment!",
       });
     }
 
     comment.content = req.body.content;
     await comment.save();
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: "Comment Updated Successfully  ! ",
+      message: "Comment updated successfully!",
       comment,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Error in updating the Comment",
+      message: "Error updating comment",
     });
   }
 };
-
 export const deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
@@ -87,30 +86,31 @@ export const deleteComment = async (req, res) => {
     if (!comment) {
       return res.status(404).json({
         success: false,
-        message: "Comment Not Found ! ",
+        message: "Comment Not Found!",
       });
     }
 
     if (
       comment.author.toString() !== req.user.id &&
-      req.user.role !== "Admin"
+      req.user.role !== "admin"
     ) {
       return res.status(403).json({
         success: false,
-        message: "Not Allwed to delete the Commnet !",
+        message: "Not allowed to delete the comment!",
       });
     }
 
-    await comment.deleteOne;
+    await comment.deleteOne();
 
-    return res.status(200).json1({
+    return res.status(200).json({
       success: true,
-      message: "Comment Deleted Successfully ! ",
+      message: "Comment deleted successfully!",
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Error in deleting the Comment",
+      message: "Error deleting comment",
     });
   }
 };
+
