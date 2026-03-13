@@ -5,6 +5,7 @@ import {
   deletePost,
   getAllPublicPosts,
   getSinglePost,
+  toggleLike,
   togglePublish,
   updatePost,
 } from "../controllers/post.controller.js";
@@ -18,6 +19,7 @@ postRouter.delete("/:id", auth, deletePost);
 postRouter.put("/publish/:id", auth, togglePublish);
 postRouter.get("/", getAllPublicPosts);
 postRouter.get("/:id", getSinglePost);
+postRouter.put("/like/:id", auth , toggleLike)
 
 export default postRouter;
          

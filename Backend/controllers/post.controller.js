@@ -149,7 +149,7 @@ export const getAllPublicPosts = async (req, res) => {
 
 export const getSinglePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate("author","name");
+    const post = await Post.findById(req.params.id).populate("author", "name");
 
     if (!post || !post.isPublished) {
       return res.status(404).json({
@@ -164,10 +164,47 @@ export const getSinglePost = async (req, res) => {
       post,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Error in the getting  the Single  post ! ",
+    });
+  }
+};
+
+export const toggleLike = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post Not Found ! ",
+      });
+    }
+
+    const userId = req.user.id;
+
+    const alredayLiked = post.likes.includes(userId);
+
+    if (alredayLiked) {
+      post.likes = post.likes.filter((id) => id.toString() !== userId);
+    } else {
+      post.likes.push(userId);
+    }
+
+    await post.save();
+
+    return res.status(200).json({
+      success: true,
+      likesCount: post.likes.length,
+      message: alredayLiked ? "Post Unliked !" : "Post Liked !",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in  Liking  post ! ",
     });
   }
 };
